@@ -1,9 +1,17 @@
 #include <Arduino.h>
 
-void setup() {
-  // put your setup code here, to run once:
+#include <access_point.h>
+#include <config.h>
+
+void setup(void)
+{
+	pinMode(LED_BUILTIN, OUTPUT);
+	Serial.begin(9600);
+
+	if (!init_ap())
+		return;
 }
 
-void loop() {
-  // put your main code here, to run repeatedly:
+void loop(void)
+{
 }
