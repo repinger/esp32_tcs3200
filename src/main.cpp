@@ -1,7 +1,8 @@
 #include <Arduino.h>
 
-#include <access_point.h>
 #include <config.h>
+#include <access_point.h>
+#include <web_server.h>
 
 void setup(void)
 {
@@ -10,8 +11,10 @@ void setup(void)
 
 	if (!init_ap())
 		return;
+	init_web_server();
 }
 
 void loop(void)
 {
+	server.handleClient();
 }
