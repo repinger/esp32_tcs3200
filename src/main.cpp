@@ -1,8 +1,9 @@
 #include <Arduino.h>
 
+#include <config.h>
 #include <access_point.h>
 #include <tcs3200.h>
-#include <config.h>
+#include <web_server.h>
 
 void setup(void)
 {
@@ -12,10 +13,13 @@ void setup(void)
 	if (!init_ap())
 		return;
 	tcs3200_init();
+	init_web_server();
 }
 
 void loop(void)
 {
 	tcs3200_detect_color();
 	delay(100);
+
+	server.handleClient();
 }
