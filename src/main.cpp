@@ -21,5 +21,5 @@ void loop(void)
 	tcs3200_detect_color();
 	delay(100);
 
-	server.handleClient();
+	web_server_handle_client();
 }
