@@ -28,5 +28,5 @@
 #define sensor_delay() \
 	delay(SENSOR_DELAY_MS);
 
-extern String tcs3200_detect_color(void);
-extern void tcs3200_init(void);
+String tcs3200_detect_color(void);
+void tcs3200_init(void);
