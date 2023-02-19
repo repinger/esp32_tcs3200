@@ -8,7 +8,9 @@
 void setup(void)
 {
 	pinMode(LED_BUILTIN, OUTPUT);
+#if DEBUG
 	Serial.begin(9600);
+#endif
 
 	if (!init_ap())
 		return;

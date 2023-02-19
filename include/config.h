@@ -2,7 +2,7 @@
  * Config header
  */
 
-#define DEBUG		1
+#define DEBUG		0
 
 #define LED_BUILTIN	2
 
