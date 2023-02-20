@@ -10,7 +10,7 @@
 #define OUT_SENSOR 	35
 
 /* Color calibration value */
-#define RED_MIN		80
+#define RED_MIN		103
 #define RED_MAX		159
 #define GREEN_MIN	172
 #define GREEN_MAX	351
@@ -24,5 +24,5 @@
 #define sensor_delay() \
 	delay(SENSOR_DELAY_MS);
 
-extern void tcs3200_detect_color(void);
+extern String tcs3200_detect_color(void);
 extern void tcs3200_init(void);

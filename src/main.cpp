@@ -18,8 +18,5 @@ void setup(void)
 
 void loop(void)
 {
-	tcs3200_detect_color();
-	delay(100);
-
 	web_server_handle_client();
 }

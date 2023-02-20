@@ -36,9 +36,10 @@ static int get_blue(void)
 	return map(blue_freq, BLUE_MIN, BLUE_MAX, 255, 0);
 }
 
-void tcs3200_detect_color(void)
+String tcs3200_detect_color(void)
 {
 	int red_color, green_color, blue_color;
+	String color;
 
 	red_color = get_red();
 	sensor_delay();
@@ -47,15 +48,27 @@ void tcs3200_detect_color(void)
 	blue_color = get_blue();
 	sensor_delay();
 
-	if (red_color < -1000 || green_color < -1000
-	    || blue_color < -1000) {
-		debug("No color detected!");
-		return;
-	}
-
 	debug(red_color);
 	debug(green_color);
 	debug(blue_color);
+
+	/* Handle no color */
+	if (red_color < -255 || green_color < -255
+	    || blue_color < -255) {
+		debug("No color detected!");
+		color = "None";
+		return color;
+	}
+
+	/* Detect color */
+	if (red_color > blue_color && red_color > green_color)
+		color = "Red";
+	else if (green_color > red_color && green_color > blue_color)
+		color = "Green";
+	else if (blue_color > red_color && blue_color > green_color)
+		color = "Blue";
+
+	return color;
 }
 
 void tcs3200_init(void)
