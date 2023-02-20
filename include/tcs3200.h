@@ -9,6 +9,10 @@
 #define S3 		13
 #define OUT_SENSOR 	35
 
+#define	RED_CODE	1
+#define BLUE_CODE	2
+#define GREEN_CODE	3
+
 /* Color calibration value */
 #define RED_MIN		103
 #define RED_MAX		159
