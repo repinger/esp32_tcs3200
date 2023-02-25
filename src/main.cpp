@@ -8,7 +8,9 @@
 void setup(void)
 {
 	pinMode(LED_BUILTIN, OUTPUT);
+#if DEBUG
 	Serial.begin(9600);
+#endif
 
 	if (!init_ap())
 		return;
@@ -18,8 +20,5 @@ void setup(void)
 
 void loop(void)
 {
-	tcs3200_detect_color();
-	delay(100);
-
 	web_server_handle_client();
 }

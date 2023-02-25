@@ -3,59 +3,75 @@
 #include <config.h>
 #include <tcs3200.h>
 
-static int get_red(void)
+static int get_color(int color_code)
 {
-	int red_freq = 0;
+	int color_freq;
+	int color_min, color_max;
 
-	digitalWrite(S2, LOW);
-	digitalWrite(S3, LOW);
-	red_freq = get_freq();
+	switch (color_code) {
+	case RED_CODE:
+		digitalWrite(S2, LOW);
+		digitalWrite(S3, LOW);
 
-	return map(red_freq, RED_MIN, RED_MAX, 255, 0);
+		color_min = RED_MIN;
+		color_max = RED_MAX;
+		goto ret;
+	case GREEN_CODE:
+		digitalWrite(S2, HIGH);
+  		digitalWrite(S3, HIGH);
+
+		color_min = GREEN_MIN;
+		color_max = GREEN_MAX;
+		goto ret;
+	case BLUE_CODE:
+		digitalWrite(S2, LOW);
+  		digitalWrite(S3, HIGH);
+
+		color_min = BLUE_MIN;
+		color_max = BLUE_MAX;
+		goto ret;
+	default:
+		return EINVAL;
+	}
+
+ret:
+	color_freq = pulseIn(OUT_SENSOR, LOW);
+	return map(color_freq, color_min, color_max, 255, 0);
 }
 
-static int get_green(void)
-{
-	int green_freq = 0;
-
-	digitalWrite(S2, HIGH);
-  	digitalWrite(S3, HIGH);
-	green_freq = get_freq();
-
-	return map(green_freq, GREEN_MIN, GREEN_MAX, 255, 0);
-}
-
-static int get_blue(void)
-{
-	int blue_freq = 0;
-
-	digitalWrite(S2, LOW);
-  	digitalWrite(S3, HIGH);
-	blue_freq = get_freq();
-
-	return map(blue_freq, BLUE_MIN, BLUE_MAX, 255, 0);
-}
-
-void tcs3200_detect_color(void)
+String tcs3200_detect_color(void)
 {
 	int red_color, green_color, blue_color;
+	String color;
 
-	red_color = get_red();
+	red_color = get_color(RED_CODE);
 	sensor_delay();
-	green_color = get_green();
+	green_color = get_color(GREEN_CODE);
 	sensor_delay();
-	blue_color = get_blue();
+	blue_color = get_color(BLUE_CODE);
 	sensor_delay();
-
-	if (red_color < -1000 || green_color < -1000
-	    || blue_color < -1000) {
-		debug("No color detected!");
-		return;
-	}
 
 	debug(red_color);
 	debug(green_color);
 	debug(blue_color);
+
+	/* Handle no color */
+	if (red_color < -255 || green_color < -255
+	    || blue_color < -255) {
+		debug("No color detected!");
+		color = "None";
+		return color;
+	}
+
+	/* Detect color */
+	if (red_color > blue_color && red_color > green_color)
+		color = "Red";
+	else if (green_color > red_color && green_color > blue_color)
+		color = "Green";
+	else if (blue_color > red_color && blue_color > green_color)
+		color = "Blue";
+
+	return color;
 }
 
 void tcs3200_init(void)
