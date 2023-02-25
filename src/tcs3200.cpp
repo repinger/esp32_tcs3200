@@ -31,7 +31,7 @@ static int get_color(int color_code)
 		color_max = BLUE_MAX;
 		goto ret;
 	default:
-		return 0;
+		return EINVAL;
 	}
 
 ret:
